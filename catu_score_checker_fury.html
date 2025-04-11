@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Catu Score Checker FURY</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Cinzel', serif;
+      background-color: #111;
+      color: #f0e6d2;
+      padding: 20px;
+      text-shadow: 1px 1px 3px black;
+    }
+
+    h1 {
+      font-size: 40px;
+      text-align: center;
+      margin-bottom: 30px;
+      color: #ffcc00;
+      text-shadow: 0 0 10px #ff6600;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-size: 18px;
+    }
+
+    input, select {
+      padding: 8px;
+      font-size: 16px;
+      width: 100%;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: none;
+      box-shadow: 0 0 5px #444;
+      background-color: #222;
+      color: #eee;
+    }
+
+    button {
+      margin-top: 25px;
+      padding: 12px 20px;
+      font-size: 18px;
+      background-color: #cc0000;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff0000;
+    }
+
+    button:hover {
+      background-color: #990000;
+    }
+
+    .result {
+      margin-top: 30px;
+      font-size: 22px;
+      font-weight: bold;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px black;
+    }
+  </style>
+</head>
+<body>
+  <h1>Catu Score Checker FURY ⚔️🔥</h1>
+
+  <label for="yourTier">What troop tier did YOU use? / Quel niveau de troupes avez-vous utilisé ?</label>
+  <select id="yourTier">
+    <option value="1">T1</option>
+    <option value="2">T2</option>
+    <option value="4">T3</option>
+    <option value="10">T4</option>
+    <option value="25">T5</option>
+    <option value="50">T6</option>
+    <option value="100">T7</option>
+    <option value="700">T8</option>
+    <option value="1400">T9</option>
+  </select>
+
+  <label for="yourLosses">How many of your troops did you lose? / Combien de vos troupes avez-vous perdu ?</label>
+  <input type="text" id="yourLosses" oninput="formatNumber(this)">
+
+  <label for="enemyTier">What troop tier did you hit on your opponent? / Quel niveau de troupes avez-vous frappé chez votre adversaire ?</label>
+  <select id="enemyTier">
+    <option value="1">T1</option>
+    <option value="2">T2</option>
+    <option value="4">T3</option>
+    <option value="10">T4</option>
+    <option value="25">T5</option>
+    <option value="50">T6</option>
+    <option value="100">T7</option>
+    <option value="700">T8</option>
+    <option value="1400">T9</option>
+  </select>
+
+  <label for="enemyLosses">How many enemy troops did you kill? / Combien de troupes ennemies avez-vous tué ?</label>
+  <input type="text" id="enemyLosses" oninput="formatNumber(this)">
+
+  <button onclick="calculate()">Check Result / Vérifier le résultat</button>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    function formatNumber(input) {
+      let number = input.value.replace(/,/g, '');
+      if (!isNaN(number) && number !== '') {
+        input.value = parseInt(number).toLocaleString();
+      }
+    }
+
+    function parseFormattedNumber(str) {
+      return parseInt(str.replace(/,/g, '')) || 0;
+    }
+
+    function calculate() {
+      const yourTier = parseInt(document.getElementById('yourTier').value);
+      const yourLosses = parseFormattedNumber(document.getElementById('yourLosses').value);
+      const enemyTier = parseInt(document.getElementById('enemyTier').value);
+      const enemyLosses = parseFormattedNumber(document.getElementById('enemyLosses').value);
+
+      const yourPoints = yourTier * yourLosses;
+      const enemyPoints = enemyTier * enemyLosses;
+
+      const message = enemyPoints > yourPoints
+        ? "✅ Keep going, you are scoring! / Continuez, vous marquez !"
+        : "❌ Stop hitting. You're losing the fight! / Arrêtez, vous perdez le combat !";
+
+      document.getElementById('result').innerHTML = `
+        <p>You lost <strong>${yourPoints.toLocaleString()}</strong> points</p>
+        <p>You scored <strong>${enemyPoints.toLocaleString()}</strong> points</p>
+        <p>${message}</p>
+      `;
+    }
+  </script>
+</body>
+</html>
